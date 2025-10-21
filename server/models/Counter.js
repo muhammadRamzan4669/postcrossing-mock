@@ -26,8 +26,8 @@ const counterSchema = new mongoose.Schema(
   }
 );
 
-// Ensure fast lookups by country
-counterSchema.index({ countryCode: 1 }, { unique: true });
+// Ensure fast lookups by country (unique: true already defined in schema field)
+counterSchema.index({ countryCode: 1 });
 
 /**
  * Atomically increments and returns the next sequence number for a country.

@@ -7,15 +7,17 @@
     <style>
       :root {
         --bg: #0f172a;
-        --panel: #111827;
-        --text: #e5e7eb;
-        --muted: #9ca3af;
-        --accent: #22c55e;
-        --danger: #ef4444;
-        --border: #374151;
-        --btn: #1f2937;
-        --btn-hover: #374151;
-        --code: #0b1020;
+        --panel: #1e293b;
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --accent: #10b981;
+        --danger: #f59e0b;
+        --border: #475569;
+        --btn: #334155;
+        --btn-hover: #475569;
+        --code: #0f1629;
+        --input-bg: #1e293b;
+        --success: #059669;
       }
       html,
       body {
@@ -38,49 +40,65 @@
           "Segoe UI Symbol";
       }
       .container {
-        max-width: 980px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 24px;
+        padding: 32px 24px;
       }
       h1 {
-        font-size: 22px;
-        margin: 0 0 6px;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0 0 8px;
+        color: var(--text);
       }
       .subtitle {
         color: var(--muted);
-        margin-bottom: 20px;
+        margin-bottom: 32px;
+        font-size: 16px;
+        line-height: 1.5;
       }
       .card {
         background: var(--panel);
         border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 16px;
-        margin-bottom: 16px;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       }
       .grid {
         display: grid;
         grid-template-columns: repeat(12, 1fr);
-        gap: 12px;
+        gap: 16px;
         align-items: end;
       }
       label {
         display: block;
-        color: var(--muted);
-        margin-bottom: 6px;
+        color: var(--text);
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 14px;
       }
       input[type="text"],
       input[type="url"] {
         width: 100%;
         box-sizing: border-box;
-        padding: 10px 12px;
+        padding: 12px 16px;
         border-radius: 8px;
         border: 1px solid var(--border);
-        background: #0b1220;
+        background: var(--input-bg);
         color: var(--text);
         outline: none;
+        font-size: 14px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      input[type="text"]:focus,
+      input[type="url"]:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
       }
       input::placeholder {
-        color: #6b7280;
+        color: var(--muted);
       }
       .col-4 {
         grid-column: span 4;
@@ -102,27 +120,43 @@
       }
       .actions {
         display: flex;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
+        align-items: center;
       }
       button {
         background: var(--btn);
         border: 1px solid var(--border);
         color: var(--text);
-        padding: 10px 14px;
+        padding: 12px 18px;
         border-radius: 8px;
         cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
+        white-space: nowrap;
       }
       button:hover {
         background: var(--btn-hover);
+        transform: translateY(-1px);
       }
       .btn-accent {
-        background: #14532d;
-        border-color: #166534;
+        background: var(--success);
+        border-color: var(--success);
+        color: white;
+      }
+      .btn-accent:hover {
+        background: #047857;
+        border-color: #047857;
       }
       .btn-danger {
-        background: #3f1212;
-        border-color: #7f1d1d;
+        background: var(--danger);
+        border-color: var(--danger);
+        color: white;
+      }
+      .btn-danger:hover {
+        background: #d97706;
+        border-color: #d97706;
       }
       .status {
         font-family:
@@ -132,14 +166,18 @@
         background: var(--code);
         border: 1px solid var(--border);
         border-radius: 10px;
-        padding: 12px;
-        color: #cbd5e1;
-        min-height: 120px;
+        padding: 16px;
+        color: #e2e8f0;
+        min-height: 140px;
+        font-size: 13px;
+        line-height: 1.5;
+        overflow-x: auto;
       }
       .hint {
         color: var(--muted);
-        font-size: 12px;
-        margin-top: 6px;
+        font-size: 13px;
+        margin-top: 8px;
+        line-height: 1.4;
       }
       .ok {
         color: var(--accent);
@@ -169,13 +207,23 @@
         color: #93c5fd;
       }
       .small {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--muted);
+        line-height: 1.5;
       }
       .mono {
         font-family:
           ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           "Liberation Mono", "Courier New", monospace;
+      }
+      h3 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .card h3:first-child {
+        margin-top: 0;
       }
     </style>
   </head>
@@ -216,17 +264,17 @@
             <button id="ping">Health Check</button>
           </div>
         </div>
-        <div class="hint" style="margin-top: 10px">
-          Tip: If you open this file directly from your file system, your
-          browser may block requests due to CORS. Serve it via a local static
-          server or host it under the same origin as the API to avoid CORS
-          errors.
+        <div class="hint" style="margin-top: 16px">
+          💡 <strong>Tip:</strong> If you open this file directly from your file
+          system, your browser may block requests due to CORS. Serve it via a
+          local static server or host it under the same origin as the API to
+          avoid CORS errors.
         </div>
       </div>
 
       <div class="card">
-        <h3>Send flow</h3>
-        <div class="actions" style="margin-bottom: 10px">
+        <h3>📮 Send Flow</h3>
+        <div class="actions" style="margin-bottom: 16px">
           <button id="requestAddr" class="btn-accent">
             Request Address (POST /api/postcards/request)
           </button>
@@ -236,15 +284,15 @@
           <button id="getStats">Get My Stats (GET /api/postcards/stats)</button>
         </div>
         <div class="small">
-          After “Request Address”, you’ll get a postcard code like
+          ℹ️ After "Request Address", you'll get a postcard code like
           <span class="mono">US-1</span> and a recipient snapshot. Use that code
-          in the “Register Received” section below to simulate reciprocity.
+          in the "Register Received" section below to simulate reciprocity.
         </div>
       </div>
 
       <div class="card">
-        <h3>Register Received</h3>
-        <div class="grid" style="margin-bottom: 10px">
+        <h3>📬 Register Received</h3>
+        <div class="grid" style="margin-bottom: 16px">
           <div class="col-8">
             <label for="recvCode">Postcard Code</label>
             <input id="recvCode" type="text" placeholder="e.g., US-1" />
@@ -256,14 +304,15 @@
           </div>
         </div>
         <div class="small">
-          When a postcard is registered as received, the sender gains 1 receive
-          credit. The next “Request Address” will draw from the pool FIFO.
+          ℹ️ When a postcard is registered as received, the sender gains 1
+          receive credit. The next "Request Address" will draw from the pool
+          FIFO.
         </div>
       </div>
 
       <div class="card">
         <div class="row" style="justify-content: space-between">
-          <div><strong>Output</strong></div>
+          <div><strong>📄 Output</strong></div>
           <div class="row small">
             <span>Copy last code:</span>
             <button id="copyCode" title="Copy last generated code">
@@ -276,15 +325,23 @@
       </div>
 
       <div class="small">
-        Backend endpoints used:
-        <ul>
-          <li>POST <span class="mono">/api/postcards/request</span></li>
-          <li>GET <span class="mono">/api/postcards/traveling</span></li>
-          <li>GET <span class="mono">/api/postcards/stats</span></li>
-          <li>
+        <strong>🔗 Backend endpoints used:</strong>
+        <ul style="margin: 8px 0; padding-left: 20px">
+          <li style="margin: 4px 0">
+            POST <span class="mono">/api/postcards/request</span>
+          </li>
+          <li style="margin: 4px 0">
+            GET <span class="mono">/api/postcards/traveling</span>
+          </li>
+          <li style="margin: 4px 0">
+            GET <span class="mono">/api/postcards/stats</span>
+          </li>
+          <li style="margin: 4px 0">
             POST <span class="mono">/api/postcards/register-received</span>
           </li>
-          <li>GET <span class="mono">/api/meta/health</span></li>
+          <li style="margin: 4px 0">
+            GET <span class="mono">/api/meta/health</span>
+          </li>
         </ul>
       </div>
     </div>
