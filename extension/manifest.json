@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "PostCrossing Tab Sorter",
+  "version": "1.0.0",
+  "description": "Sort open PostCrossing tabs by postcard number (e.g., CL-34269, CN-4087990, US-11797804).",
+  "permissions": ["tabs"],
+  "action": {
+    "default_title": "Sort PostCrossing Tabs"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "commands": {
+    "sort-postcrossing-tabs": {
+      "suggested_key": {
+        "default": "Alt+Shift+S"
+      },
+      "description": "Sort tabs by postcard number"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "postcrossing-tabs@example.com",
+      "strict_min_version": "109.0"
+    }
+  }
+}

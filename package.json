@@ -1,0 +1,25 @@
+{
+  "name": "postcrossing-mock",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root workspace for PostCrossing mock backend, simple web UI, and Firefox extension.",
+  "workspaces": [
+    "server"
+  ],
+  "scripts": {
+    "bootstrap": "npm install -w server || npm --prefix server install",
+    "start": "npm run -w server start",
+    "dev": "npm run -w server dev",
+    "seed": "npm run -w server seed",
+    "lint": "npm run -w server lint",
+    "start:legacy": "npm --prefix server start",
+    "dev:legacy": "npm --prefix server run dev",
+    "seed:legacy": "npm --prefix server run seed",
+    "health": "node -e \"console.log('Health endpoint: http://localhost:4000/api/meta/health')\" && exit 0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=7.0.0"
+  },
+  "packageManager": "npm@10"
+}

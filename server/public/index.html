@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PostCrossing Mock — Simple UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --danger: #ef4444;
+      --border: #374151;
+      --btn: #1f2937;
+      --btn-hover: #374151;
+      --code: #0b1020;
+    }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 6px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      align-items: end;
+    }
+    label { display: block; color: var(--muted); margin-bottom: 6px; }
+    input[type="text"], input[type="url"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+    }
+    input::placeholder { color: #6b7280; }
+    .col-4 { grid-column: span 4; }
+    .col-5 { grid-column: span 5; }
+    .col-6 { grid-column: span 6; }
+    .col-7 { grid-column: span 7; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      background: var(--btn);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: var(--btn-hover); }
+    .btn-accent { background: #14532d; border-color: #166534; }
+    .btn-danger { background: #3f1212; border-color: #7f1d1d; }
+    .status {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      white-space: pre-wrap;
+      background: var(--code);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      color: #cbd5e1;
+      min-height: 120px;
+    }
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+    .ok { color: var(--accent); }
+    .err { color: var(--danger); }
+    .row {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    }
+    kbd {
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      border-bottom-width: 3px;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: #0c1326;
+      color: #cbd5e1;
+    }
+    a { color: #93c5fd; }
+    .small { font-size: 12px; color: var(--muted); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+<body>
+  <div class</body>="container">
+    <h1>Post</h1>Crossing Mock</h1>
+    <div class="subtitle">Minimal UI for requesting addresses and registering received postcards.</div>
+
+    <div class="card">
+      <div class="grid">
+        <div class="col-7">
+          <label for="apiBase">API base URL</label>
+          <input id="apiBase" type="url" placeholder="http://localhost:4000" />
+          <div class="hint">Default server from this project listens on <span class="mono">http://localhost:4000</span>.</div>
+        </div>
+        <div class="col-5">
+          <label for="userId">User ID (x-user-id)</label>
+          <input id="userId" type="text" placeholder="Paste a user _id from seed output" />
+          <div class="hint">Use one of the seeded IDs (e.g., alice, bruno, cami, dave).</div>
+        </div>
+        <div class="col-12 actions">
+          <button id="saveCfg" class="btn-accent">Save Settings</button>
+          <button id="ping">Health Check</button>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:10px">
+        Tip: If you open this file directly from your file system, your browser may block requests due to CORS. Serve it via a local static server
+        or host it under the same origin as the API to avoid CORS errors.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Send flow</h3>
+      <</h3>div class="actions" style="margin-bottom:10px">
+        <button id="requestAddr" class="btn-accent">Request Address (POST /api/postcards/request)</button>
+        <button id="listTraveling">List Traveling (GET /api/postcards/traveling)</button>
+        <button id="getStats">Get My Stats (GET /api/postcards/stats)</button>
+      </div>
+      <div class="small">
+        After “Request Address”, you’ll get a postcard code like <span class="mono">US-1</span> and a recipient snapshot.
+        Use that code in the “Register Received” section below to simulate reciprocity.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Register Received</h3></h3>
+      <div class="grid" style="margin-bottom:10px">
+        <div class="col-8">
+          <label for="recvCode">Postcard Code</label>
+          <input id="recvCode" type="text" placeholder="e.g., US-1" />
+        </div>
+        <div class="col-4 actions">
+          <button id="registerReceived" class="btn-danger">Register Received (POST /api/postcards/register-received)</button>
+        </div>
+      </div>
+      <div class="small">
+        When a postcard is registered as received, the sender gains 1 receive credit. The next “Request Address” will draw from the pool FIFO.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content: space-between;">
+        <div><strong></strong>Output</strong></div>
+        <div class="row small">
+          <span>Copy last code:</</span>span>
+          <button id="copyCode" title="Copy last generated code"><kbd>Copy</kbd></kbd></button>
+          <span id="lastCode" class="mono" style="margin-left:6px"></span>
+        </div>
+      </div>
+      <pre id="status" class="status" aria-live="polite">Ready.</pre>
+    </div>
+
+    <div class="small">
+      Backend endpoints used:
+      <ul>
+        <li>POST <span class="mono">/api/postcards/request</ul></li></span></li>
+        <li>GET <span</li> class="mono">/api/postcards/traveling</span></li>
+        <li>GET <span class="mono">/api/postcards/stats</span></li>
+        <li></li></li>POST <span class="mono">/api/postcards/register-received</span></li>
+        <li>GET <span class="mono">/api/meta/health</span></li>
+      </</li>ul>
+    </div>
+  </div>
+
+  <script>
+    // Persistent settings
+    const apiBaseEl = document</script>.getElementById('apiBase');
+    const userIdEl = document.getElementById('userId');
+    const statusEl = document.getElementById('status');
+    const lastCodeEl = document.getElementById('lastCode');
+    const recvCodeEl = document.getElementById('recvCode');
+
+    const LS_KEY = 'pcmock_settings_v1';
+
+    function loadSettings() {
+      try {
+        const s = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+        if (s.apiBase) apiBaseEl.value = s.apiBase;
+        if (s.userId) userIdEl.value = s.userId;
+      } catch {}
+      if (!apiBaseEl.value) apiBaseEl.value = 'http://localhost:4000';
+    }
+    function saveSettings() {
+      const s = { apiBase: apiBaseEl.value.trim(), userId: userIdEl.value.trim() };
+      localStorage.setItem(LS_KEY, JSON.stringify(s));
+      toast('Settings saved.');
+      return s;
+    }
+
+    function toast(msg, type = 'ok') {
+      const prefix = type === 'err' ? '⛔ ' : '✅ ';
+      log(prefix + msg);
+    }
+
+    function log(obj) {
+      const text = typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2);
+      statusEl.textContent = text;
+    }
+
+    function pretty(obj) {
+      return JSON.stringify(obj, null, 2);
+    }
+
+    function getCfg() {
+      const apiBase = apiBaseEl.value.trim().replace(/\/+$/, '');
+      const userId = userIdEl.value.trim();
+      return { apiBase, userId };
+    }
+
+    async function apiFetch(path, { method = 'GET', body, headers = {} } = {}) {
+      const { apiBase, userId } = getCfg();
+      if (!apiBase) throw new Error('API base URL is empty');
+      const url = apiBase + path;
+
+      const finalHeaders = { ...headers };
+      if (userId) finalHeaders['x-user-id'] = userId;
+      if (body && !finalHeaders['Content-Type']) finalHeaders['Content-Type'] = 'application/json';
+
+      const res = await fetch(url, {
+        method,
+        headers: finalHeaders,
+        body: body ? JSON.stringify(body) : undefined
+      });
+
+      let data = null;
+      const text = await res.text();
+      try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+
+      if (!res.ok) {
+        const message = (data && (data.error || data.message)) || res.statusText || 'Request failed';
+        const err = new Error(message);
+        err.response = res;
+        err.data = data;
+        throw err;
+      }
+      return data;
+    }
+
+    // Actions
+    async function health() {
+      try {
+        const data = await apiFetch('/api/meta/health');
+        toast('Health OK');
+        log(data);
+      } catch (e) {
+        toast(e.message || 'Health check failed', 'err');
+        log(e.data || e.message || e);
+      }
+    }
+
+    async function requestAddress() {
+      try {
+        const data = await apiFetch('/api/postcards/request', { method: 'POST' });
+        if (data?.ok && data.postcard?.code) {
+          lastCodeEl.textContent = data.postcard.code;
+          recvCodeEl.value = data.postcard.code;
+          toast('Address assigned. Postcard created.');
+        }
+        log(data);
+      } catch (e) {
+        toast(e.message || 'Request failed', 'err');
+        log(e.data || e.message || e);
+      }
+    }
+
+    async function listTraveling() {
+      try {
+        const data = await apiFetch('/api/postcards/traveling');
+        toast('Fetched traveling postcards.');
+        log(data);
+      } catch (e) {
+        toast(e.message || 'List traveling failed', 'err');
+        log(e.data || e.message || e);
+      }
+    }
+
+    async function getStats() {
+      try {
+        const data = await apiFetch('/api/postcards/stats');
+        toast('Fetched stats.');
+        log(data);
+      } catch (e) {
+        toast(e.message || 'Stats failed', 'err');
+        log(e.data || e.message || e);
+      }
+    }
+
+    async function registerReceived() {
+      try {
+        const code = recvCodeEl.value.trim();
+        if (!code) {
+          toast('Enter a postcard code first.', 'err');
+          return;
+        }
+        const data = await apiFetch('/api/postcards/register-received', {
+          method: 'POST',
+          body: { code }
+        });
+        toast('Registered as received. Credit granted to sender.');
+        log(data);
+      } catch (e) {
+        toast(e.message || 'Register failed', 'err');
+        log(e.data || e.message || e);
+      }
+    }
+
+    async function copyLastCode() {
+      const code = lastCodeEl.textContent.trim();
+      if (!code) { toast('No code available to copy.', 'err'); return; }
+      try {
+        await navigator.clipboard.writeText(code);
+        toast('Copied code: ' + code);
+      } catch {
+        toast('Clipboard unavailable. Select and copy manually: ' + code, 'err');
+      }
+    }
+
+    // Wire up events
+    document.getElementById('saveCfg').addEventListener('click', saveSettings);
+    document.getElementById('ping').addEventListener('click', health);
+    document.getElementById('requestAddr').addEventListener('click', requestAddress);
+    document.getElementById('listTraveling').addEventListener('click', listTraveling);
+    document.getElementById('getStats').addEventListener('click', getStats);
+    document.getElementById('registerReceived').addEventListener('click', registerReceived);
+    document.getElementById('copyCode').addEventListener('click', copyLastCode);
+
+    // Initialize
+    loadSettings();
+  </script>
+</body>
+</html>
