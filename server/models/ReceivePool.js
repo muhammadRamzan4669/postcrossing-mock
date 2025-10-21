@@ -23,8 +23,7 @@ const receivePoolSchema = new mongoose.Schema(
       trim: true,
       minlength: 2,
       maxlength: 3,
-      set: (v) => (v ? String(v).toUpperCase() : v),
-      index: true
+      set: (v) => (v ? String(v).toUpperCase() : v)
     },
     createdAt: {
       type: Date,
