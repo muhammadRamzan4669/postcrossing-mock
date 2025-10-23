@@ -1,369 +1,681 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>PostCrossing Mock — Simple UI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #22c55e;
-      --danger: #ef4444;
-      --border: #374151;
-      --btn: #1f2937;
-      --btn-hover: #374151;
-      --code: #0b1020;
-    }
-    html, body {
-      margin: 0;
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    }
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-    h1 {
-      font-size: 22px;
-      margin: 0 0 6px;
-    }
-    .subtitle {
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-      align-items: end;
-    }
-    label { display: block; color: var(--muted); margin-bottom: 6px; }
-    input[type="text"], input[type="url"] {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: #0b1220;
-      color: var(--text);
-      outline: none;
-    }
-    input::placeholder { color: #6b7280; }
-    .col-4 { grid-column: span 4; }
-    .col-5 { grid-column: span 5; }
-    .col-6 { grid-column: span 6; }
-    .col-7 { grid-column: span 7; }
-    .col-8 { grid-column: span 8; }
-    .col-12 { grid-column: span 12; }
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    button {
-      background: var(--btn);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover { background: var(--btn-hover); }
-    .btn-accent { background: #14532d; border-color: #166534; }
-    .btn-danger { background: #3f1212; border-color: #7f1d1d; }
-    .status {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      white-space: pre-wrap;
-      background: var(--code);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      color: #cbd5e1;
-      min-height: 120px;
-    }
-    .hint {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 6px;
-    }
-    .ok { color: var(--accent); }
-    .err { color: var(--danger); }
-    .row {
-      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-    }
-    kbd {
-      padding: 2px 6px;
-      border: 1px solid var(--border);
-      border-bottom-width: 3px;
-      border-radius: 6px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      background: #0c1326;
-      color: #cbd5e1;
-    }
-    a { color: #93c5fd; }
-    .small { font-size: 12px; color: var(--muted); }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostCrossing Mock - Realistic Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .login-section {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .current-user {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .login-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .login-form input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .address-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .address-card.active {
+            display: block;
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .address-details {
+            margin-bottom: 15px;
+        }
+
+        .address-details h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .address-line {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .postcard-code {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .postcard-received {
+            background: #d1ecf1;
+            border: 2px solid #bee5eb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .postcard-received.active {
+            display: block;
+        }
+
+        .postcard-from {
+            font-weight: bold;
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .credits-section {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .credits-section.active {
+            display: block;
+        }
+
+        .credit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0c340;
+        }
+
+        .credit-item:last-child {
+            border-bottom: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .message {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class</body>="container">
-    <h1>Post</h1>Crossing Mock</h1>
-    <div class="subtitle">Minimal UI for requesting addresses and registering received postcards.</div>
+    <div class="container">
+        <div class="header">
+            <h1>📮 PostCrossing Mock</h1>
+            <p>Experience the joy of exchanging postcards worldwide</p>
+        </div>
 
-    <div class="card">
-      <div class="grid">
-        <div class="col-7">
-          <label for="apiBase">API base URL</label>
-          <input id="apiBase" type="url" placeholder="http://localhost:4000" />
-          <div class="hint">Default server from this project listens on <span class="mono">http://localhost:4000</span>.</div>
+        <!-- User Login Section -->
+        <div class="panel">
+            <div class="login-section">
+                <div id="currentUserDisplay" class="current-user" style="display: none;">
+                    Logged in as: <span id="currentUsername"></span>
+                </div>
+
+                <div class="login-form">
+                    <input type="text" id="usernameInput" placeholder="Try: alice, yuki, pierre, oliver, carlos, wei, bruno, sakura..." value="">
+                    <button class="btn btn-primary" onclick="loginUser()">🔑 Login</button>
+                </div>
+
+                <div style="font-size: 0.9rem; color: #666;">
+                    <strong>200+ users from 43 countries!</strong> Try: <strong>alice</strong> (US), <strong>yuki</strong> (Japan), <strong>pierre</strong> (France), <strong>oliver</strong> (UK), <strong>carlos</strong> (Spain), <strong>wei</strong> (Singapore), <strong>bruno</strong> (Germany), <strong>ivan</strong> (Russia), <strong>ahmed</strong> (Egypt)
+                </div>
+            </div>
         </div>
-        <div class="col-5">
-          <label for="userId">User ID (x-user-id)</label>
-          <input id="userId" type="text" placeholder="Paste a user _id from seed output" />
-          <div class="hint">Use one of the seeded IDs (e.g., alice, bruno, cami, dave).</div>
+
+        <div class="main-content">
+            <!-- Left Panel - Send Postcards -->
+            <div class="panel">
+                <h2 class="section-title">📤 Send Postcards</h2>
+
+                <div id="loginPrompt" class="message info">
+                    Please login first to start sending postcards!
+                </div>
+
+                <div id="sendSection" class="hidden">
+                    <button class="btn btn-success" onclick="requestAddress()" style="width: 100%; margin-bottom: 15px;">
+                        🎯 Request New Address
+                    </button>
+
+                    <!-- Address Display -->
+                    <div id="addressCard" class="address-card">
+                        <h4>📍 Send Your Postcard To:</h4>
+                        <div id="addressDetails" class="address-details"></div>
+                        <div id="postcardCode" class="postcard-code"></div>
+                        <button class="btn btn-warning" onclick="sendPostcard()" style="width: 100%;">
+                            ✉️ Send Postcard to This Address
+                        </button>
+                    </div>
+
+                    <!-- User Stats -->
+                    <div id="userStats" class="stats-grid"></div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Receive Postcards -->
+            <div class="panel">
+                <h2 class="section-title">📥 Receive Postcards</h2>
+
+                <div id="receivePrompt" class="message info">
+                    Login to see received postcards and credits!
+                </div>
+
+                <div id="receiveSection" class="hidden">
+                    <!-- Received Postcards -->
+                    <div id="receivedPostcards"></div>
+
+                    <!-- Credits Received -->
+                    <div id="creditsSection" class="credits-section">
+                        <h4 style="margin-bottom: 15px;">💰 Credits Received</h4>
+                        <div id="creditsList"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-12 actions">
-          <button id="saveCfg" class="btn-accent">Save Settings</button>
-          <button id="ping">Health Check</button>
-        </div>
-      </div>
-      <div class="hint" style="margin-top:10px">
-        Tip: If you open this file directly from your file system, your browser may block requests due to CORS. Serve it via a local static server
-        or host it under the same origin as the API to avoid CORS errors.
-      </div>
+
+        <!-- Status Messages -->
+        <div id="statusMessages"></div>
     </div>
 
-    <div class="card">
-      <h3>Send flow</h3>
-      <</h3>div class="actions" style="margin-bottom:10px">
-        <button id="requestAddr" class="btn-accent">Request Address (POST /api/postcards/request)</button>
-        <button id="listTraveling">List Traveling (GET /api/postcards/traveling)</button>
-        <button id="getStats">Get My Stats (GET /api/postcards/stats)</button>
-      </div>
-      <div class="small">
-        After “Request Address”, you’ll get a postcard code like <span class="mono">US-1</span> and a recipient snapshot.
-        Use that code in the “Register Received” section below to simulate reciprocity.
-      </div>
-    </div>
+    <script>
+        // Global state
+        let currentUser = null;
+        let currentAddress = null;
+        let currentPostcardCode = null;
+        const apiUrl = 'http://localhost:4000';
 
-    <div class="card">
-      <h3>Register Received</h3></h3>
-      <div class="grid" style="margin-bottom:10px">
-        <div class="col-8">
-          <label for="recvCode">Postcard Code</label>
-          <input id="recvCode" type="text" placeholder="e.g., US-1" />
-        </div>
-        <div class="col-4 actions">
-          <button id="registerReceived" class="btn-danger">Register Received (POST /api/postcards/register-received)</button>
-        </div>
-      </div>
-      <div class="small">
-        When a postcard is registered as received, the sender gains 1 receive credit. The next “Request Address” will draw from the pool FIFO.
-      </div>
-    </div>
+        // Simulated data stores
+        let travelingPostcards = [];
+        let userCredits = {};
 
-    <div class="card">
-      <div class="row" style="justify-content: space-between;">
-        <div><strong></strong>Output</strong></div>
-        <div class="row small">
-          <span>Copy last code:</</span>span>
-          <button id="copyCode" title="Copy last generated code"><kbd>Copy</kbd></kbd></button>
-          <span id="lastCode" class="mono" style="margin-left:6px"></span>
-        </div>
-      </div>
-      <pre id="status" class="status" aria-live="polite">Ready.</pre>
-    </div>
+        // Login functionality
+        async function loginUser() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (!username) {
+                showMessage('Please enter a username!', 'error');
+                return;
+            }
 
-    <div class="small">
-      Backend endpoints used:
-      <ul>
-        <li>POST <span class="mono">/api/postcards/request</ul></li></span></li>
-        <li>GET <span</li> class="mono">/api/postcards/traveling</span></li>
-        <li>GET <span class="mono">/api/postcards/stats</span></li>
-        <li></li></li>POST <span class="mono">/api/postcards/register-received</span></li>
-        <li>GET <span class="mono">/api/meta/health</span></li>
-      </</li>ul>
-    </div>
-  </div>
+            try {
+                // Test if user exists by getting their stats
+                const response = await fetch(`${apiUrl}/api/postcards/stats`, {
+                    headers: { 'x-user-id': username }
+                });
 
-  <script>
-    // Persistent settings
-    const apiBaseEl = document</script>.getElementById('apiBase');
-    const userIdEl = document.getElementById('userId');
-    const statusEl = document.getElementById('status');
-    const lastCodeEl = document.getElementById('lastCode');
-    const recvCodeEl = document.getElementById('recvCode');
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.stats;
+                    document.getElementById('currentUsername').textContent = username;
+                    document.getElementById('currentUserDisplay').style.display = 'block';
+                    document.getElementById('usernameInput').value = '';
 
-    const LS_KEY = 'pcmock_settings_v1';
+                    // Show user sections
+                    document.getElementById('loginPrompt').classList.add('hidden');
+                    document.getElementById('sendSection').classList.remove('hidden');
+                    document.getElementById('receivePrompt').classList.add('hidden');
+                    document.getElementById('receiveSection').classList.remove('hidden');
 
-    function loadSettings() {
-      try {
-        const s = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
-        if (s.apiBase) apiBaseEl.value = s.apiBase;
-        if (s.userId) userIdEl.value = s.userId;
-      } catch {}
-      if (!apiBaseEl.value) apiBaseEl.value = 'http://localhost:4000';
-    }
-    function saveSettings() {
-      const s = { apiBase: apiBaseEl.value.trim(), userId: userIdEl.value.trim() };
-      localStorage.setItem(LS_KEY, JSON.stringify(s));
-      toast('Settings saved.');
-      return s;
-    }
+                    updateUserStats();
+                    checkForReceivedPostcards();
+                    updateCreditsDisplay();
 
-    function toast(msg, type = 'ok') {
-      const prefix = type === 'err' ? '⛔ ' : '✅ ';
-      log(prefix + msg);
-    }
-
-    function log(obj) {
-      const text = typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2);
-      statusEl.textContent = text;
-    }
-
-    function pretty(obj) {
-      return JSON.stringify(obj, null, 2);
-    }
-
-    function getCfg() {
-      const apiBase = apiBaseEl.value.trim().replace(/\/+$/, '');
-      const userId = userIdEl.value.trim();
-      return { apiBase, userId };
-    }
-
-    async function apiFetch(path, { method = 'GET', body, headers = {} } = {}) {
-      const { apiBase, userId } = getCfg();
-      if (!apiBase) throw new Error('API base URL is empty');
-      const url = apiBase + path;
-
-      const finalHeaders = { ...headers };
-      if (userId) finalHeaders['x-user-id'] = userId;
-      if (body && !finalHeaders['Content-Type']) finalHeaders['Content-Type'] = 'application/json';
-
-      const res = await fetch(url, {
-        method,
-        headers: finalHeaders,
-        body: body ? JSON.stringify(body) : undefined
-      });
-
-      let data = null;
-      const text = await res.text();
-      try { data = text ? JSON.parse(text) : null; } catch { data = text; }
-
-      if (!res.ok) {
-        const message = (data && (data.error || data.message)) || res.statusText || 'Request failed';
-        const err = new Error(message);
-        err.response = res;
-        err.data = data;
-        throw err;
-      }
-      return data;
-    }
-
-    // Actions
-    async function health() {
-      try {
-        const data = await apiFetch('/api/meta/health');
-        toast('Health OK');
-        log(data);
-      } catch (e) {
-        toast(e.message || 'Health check failed', 'err');
-        log(e.data || e.message || e);
-      }
-    }
-
-    async function requestAddress() {
-      try {
-        const data = await apiFetch('/api/postcards/request', { method: 'POST' });
-        if (data?.ok && data.postcard?.code) {
-          lastCodeEl.textContent = data.postcard.code;
-          recvCodeEl.value = data.postcard.code;
-          toast('Address assigned. Postcard created.');
+                    showMessage(`Welcome back, ${currentUser.username}!`, 'success');
+                } else {
+                    showMessage('User not found! Try: alice, bruno, cami, or dave', 'error');
+                }
+            } catch (error) {
+                showMessage('Login failed: ' + error.message, 'error');
+            }
         }
-        log(data);
-      } catch (e) {
-        toast(e.message || 'Request failed', 'err');
-        log(e.data || e.message || e);
-      }
-    }
 
-    async function listTraveling() {
-      try {
-        const data = await apiFetch('/api/postcards/traveling');
-        toast('Fetched traveling postcards.');
-        log(data);
-      } catch (e) {
-        toast(e.message || 'List traveling failed', 'err');
-        log(e.data || e.message || e);
-      }
-    }
+        // Request new address
+        async function requestAddress() {
+            if (!currentUser) {
+                showMessage('Please login first!', 'error');
+                return;
+            }
 
-    async function getStats() {
-      try {
-        const data = await apiFetch('/api/postcards/stats');
-        toast('Fetched stats.');
-        log(data);
-      } catch (e) {
-        toast(e.message || 'Stats failed', 'err');
-        log(e.data || e.message || e);
-      }
-    }
+            try {
+                const response = await fetch(`${apiUrl}/api/postcards/request`, {
+                    method: 'POST',
+                    headers: { 'x-user-id': currentUser.username }
+                });
 
-    async function registerReceived() {
-      try {
-        const code = recvCodeEl.value.trim();
-        if (!code) {
-          toast('Enter a postcard code first.', 'err');
-          return;
+                if (response.ok) {
+                    const data = await response.json();
+                    currentAddress = data.postcard.recipientAddressSnapshot;
+                    currentPostcardCode = data.postcard.code;
+
+                    displayAddress();
+                    updateUserStats();
+                    showMessage('New address assigned! Ready to send postcard.', 'success');
+                } else {
+                    const error = await response.json();
+                    showMessage('Failed to get address: ' + error.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Request failed: ' + error.message, 'error');
+            }
         }
-        const data = await apiFetch('/api/postcards/register-received', {
-          method: 'POST',
-          body: { code }
+
+        // Display address card
+        function displayAddress() {
+            if (!currentAddress) return;
+
+            const addressDetails = `
+                <div class="address-line"><strong>${currentAddress.fullName}</strong></div>
+                <div class="address-line">${currentAddress.line1}</div>
+                ${currentAddress.line2 ? `<div class="address-line">${currentAddress.line2}</div>` : ''}
+                <div class="address-line">${currentAddress.city}, ${currentAddress.postalCode}</div>
+                <div class="address-line"><strong>${currentAddress.countryCode}</strong></div>
+            `;
+
+            document.getElementById('addressDetails').innerHTML = addressDetails;
+            document.getElementById('postcardCode').innerHTML = `
+                <strong>Postcard Code: ${currentPostcardCode}</strong><br>
+                <small>Write this code on your postcard!</small>
+            `;
+            document.getElementById('addressCard').classList.add('active');
+        }
+
+        // Send postcard (simulate)
+        function sendPostcard() {
+            if (!currentPostcardCode) {
+                showMessage('No postcard to send! Request an address first.', 'error');
+                return;
+            }
+
+            // Add to traveling postcards simulation
+            travelingPostcards.push({
+                code: currentPostcardCode,
+                to: currentAddress.fullName,
+                country: currentAddress.countryCode,
+                from: currentUser.username
+            });
+
+            showMessage(`Postcard ${currentPostcardCode} sent to ${currentAddress.fullName} in ${currentAddress.countryCode}! 📮`, 'success');
+
+            // Clear current address
+            currentAddress = null;
+            currentPostcardCode = null;
+            document.getElementById('addressCard').classList.remove('active');
+        }
+
+        // Check for received postcards
+        function checkForReceivedPostcards() {
+            const receivedContainer = document.getElementById('receivedPostcards');
+
+            // Check if current user has any postcards sent to them
+            const receivedPostcards = travelingPostcards.filter(pc =>
+                pc.country === currentUser.countryCode &&
+                Math.random() > 0.3 // Simulate some postcards arriving
+            );
+
+            if (receivedPostcards.length > 0) {
+                let html = '<h4>📬 Postcards Received</h4>';
+
+                receivedPostcards.forEach(postcard => {
+                    html += `
+                        <div class="postcard-received active">
+                            <div class="postcard-from">
+                                Postcard from ${postcard.from} (${postcard.country})
+                            </div>
+                            <div style="font-family: 'Courier New', monospace; font-weight: bold; margin: 10px 0;">
+                                Code: ${postcard.code}
+                            </div>
+                            <button class="btn btn-danger" onclick="registerReceived('${postcard.code}', '${postcard.from}')">
+                                ✅ Register as Received
+                            </button>
+                        </div>
+                    `;
+                });
+
+                receivedContainer.innerHTML = html;
+            } else {
+                receivedContainer.innerHTML = `
+                    <div class="message info">
+                        No postcards received yet. Keep checking back! 📪
+                    </div>
+                `;
+            }
+        }
+
+        // Register postcard as received
+        async function registerReceived(code, senderUsername) {
+            try {
+                const response = await fetch(`${apiUrl}/api/postcards/register-received`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code })
+                });
+
+                if (response.ok) {
+                    // Add credit to sender
+                    if (!userCredits[senderUsername]) {
+                        userCredits[senderUsername] = [];
+                    }
+                    userCredits[senderUsername].push({
+                        from: currentUser.username,
+                        code: code,
+                        date: new Date().toLocaleDateString()
+                    });
+
+                    // Remove from traveling
+                    travelingPostcards = travelingPostcards.filter(pc => pc.code !== code);
+
+                    showMessage(`Postcard ${code} registered! ${senderUsername} received 1 credit. 🎉`, 'success');
+                    updateUserStats();
+                    checkForReceivedPostcards();
+
+                    // If sender is current user, update their credits display
+                    if (senderUsername === currentUser.username) {
+                        updateCreditsDisplay();
+                    }
+                } else {
+                    const error = await response.json();
+                    showMessage('Registration failed: ' + error.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Registration failed: ' + error.message, 'error');
+            }
+        }
+
+        // Update user stats display
+        async function updateUserStats() {
+            if (!currentUser) return;
+
+            try {
+                const response = await fetch(`${apiUrl}/api/postcards/stats`, {
+                    headers: { 'x-user-id': currentUser.username }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.stats;
+
+                    const statsHtml = `
+                        <div class="stat-item">
+                            <div class="stat-number">${currentUser.sent}</div>
+                            <div class="stat-label">Sent</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${currentUser.received}</div>
+                            <div class="stat-label">Received</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${currentUser.traveling}</div>
+                            <div class="stat-label">Traveling</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${currentUser.maxSlots}</div>
+                            <div class="stat-label">Max Slots</div>
+                        </div>
+                    `;
+
+                    document.getElementById('userStats').innerHTML = statsHtml;
+                }
+            } catch (error) {
+                console.error('Failed to update stats:', error);
+            }
+        }
+
+        // Update credits display
+        function updateCreditsDisplay() {
+            const credits = userCredits[currentUser.username] || [];
+            const creditsContainer = document.getElementById('creditsList');
+            const creditsSection = document.getElementById('creditsSection');
+
+            if (credits.length > 0) {
+                let html = '';
+                credits.forEach(credit => {
+                    html += `
+                        <div class="credit-item">
+                            <span>Credit from ${credit.from}</span>
+                            <span style="font-size: 0.8rem; color: #666;">${credit.date}</span>
+                        </div>
+                    `;
+                });
+                creditsContainer.innerHTML = html;
+                creditsSection.classList.add('active');
+            } else {
+                creditsSection.classList.remove('active');
+            }
+        }
+
+        // Show status message
+        function showMessage(message, type) {
+            const container = document.getElementById('statusMessages');
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = message;
+
+            container.appendChild(messageEl);
+
+            setTimeout(() => {
+                messageEl.remove();
+            }, 5000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set random international user for demo
+            const demoUsers = ['alice', 'yuki', 'pierre', 'oliver', 'carlos', 'wei', 'bruno', 'ivan', 'sakura', 'marco', 'sofia', 'jin', 'ana', 'raj', 'lars', 'cami'];
+            const randomUser = demoUsers[Math.floor(Math.random() * demoUsers.length)];
+            document.getElementById('usernameInput').value = randomUser;
+
+            // Check server connection
+            fetch(`${apiUrl}/api/meta/health`)
+                .then(response => response.json())
+                .then(() => {
+                    showMessage('🚀 PostCrossing Mock is ready! Login to start.', 'success');
+                })
+                .catch(() => {
+                    showMessage('❌ Server connection failed. Make sure server is running on port 4000.', 'error');
+                });
         });
-        toast('Registered as received. Credit granted to sender.');
-        log(data);
-      } catch (e) {
-        toast(e.message || 'Register failed', 'err');
-        log(e.data || e.message || e);
-      }
-    }
-
-    async function copyLastCode() {
-      const code = lastCodeEl.textContent.trim();
-      if (!code) { toast('No code available to copy.', 'err'); return; }
-      try {
-        await navigator.clipboard.writeText(code);
-        toast('Copied code: ' + code);
-      } catch {
-        toast('Clipboard unavailable. Select and copy manually: ' + code, 'err');
-      }
-    }
-
-    // Wire up events
-    document.getElementById('saveCfg').addEventListener('click', saveSettings);
-    document.getElementById('ping').addEventListener('click', health);
-    document.getElementById('requestAddr').addEventListener('click', requestAddress);
-    document.getElementById('listTraveling').addEventListener('click', listTraveling);
-    document.getElementById('getStats').addEventListener('click', getStats);
-    document.getElementById('registerReceived').addEventListener('click', registerReceived);
-    document.getElementById('copyCode').addEventListener('click', copyLastCode);
-
-    // Initialize
-    loadSettings();
-  </script>
+    </script>
 </body>
 </html>

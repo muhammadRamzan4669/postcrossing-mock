@@ -81,6 +81,12 @@ mongoose
     console.log("Mongo connected", MONGODB_URI);
     app.listen(PORT, () => {
       console.log(`Server listening on :${PORT}`);
+      console.log(`\n🚀 PostCrossing Mock is ready!`);
+      console.log(`📱 Web Interface: http://localhost:${PORT}`);
+      console.log(`🔍 API Health: http://localhost:${PORT}/api/meta/health`);
+      console.log(`\n👥 Demo users: alice, bruno, cami, dave`);
+      console.log(`💡 Open the web interface and use 'alice' as User ID`);
+      console.log(`────────────────────────────────────────`);
     });
   })
   .catch((err) => {

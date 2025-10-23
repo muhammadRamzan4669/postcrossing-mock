@@ -1,548 +1,275 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8" />
-    <title>PostCrossing Mock — Simple UI</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PostCrossing Mock</title>
     <style>
-      :root {
-        --bg: #0f172a;
-        --panel: #1e293b;
-        --text: #f1f5f9;
-        --muted: #94a3b8;
-        --accent: #10b981;
-        --danger: #f59e0b;
-        --border: #475569;
-        --btn: #334155;
-        --btn-hover: #475569;
-        --code: #0f1629;
-        --input-bg: #1e293b;
-        --success: #059669;
-      }
-      html,
       body {
-        margin: 0;
-        height: 100%;
-        background: var(--bg);
-        color: var(--text);
-        font:
-          14px/1.4 system-ui,
-          -apple-system,
-          Segoe UI,
-          Roboto,
-          Ubuntu,
-          Cantarell,
-          "Helvetica Neue",
-          Arial,
-          "Noto Sans",
-          "Apple Color Emoji",
-          "Segoe UI Emoji",
-          "Segoe UI Symbol";
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f5f5f5;
       }
       .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 32px 24px;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
       h1 {
-        font-size: 28px;
-        font-weight: 700;
-        margin: 0 0 8px;
-        color: var(--text);
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
       }
-      .subtitle {
-        color: var(--muted);
-        margin-bottom: 32px;
-        font-size: 16px;
-        line-height: 1.5;
+      .section {
+        margin-bottom: 30px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
       }
-      .card {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 16px;
-        align-items: end;
+      .section h2 {
+        margin-top: 0;
+        color: #555;
+        font-size: 18px;
       }
       label {
         display: block;
-        color: var(--text);
-        margin-bottom: 8px;
-        font-weight: 500;
-        font-size: 14px;
+        margin-bottom: 5px;
+        font-weight: bold;
       }
-      input[type="text"],
-      input[type="url"] {
+      input {
         width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
         box-sizing: border-box;
-        padding: 12px 16px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        background: var(--input-bg);
-        color: var(--text);
-        outline: none;
-        font-size: 14px;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
-      }
-      input[type="text"]:focus,
-      input[type="url"]:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-      }
-      input::placeholder {
-        color: var(--muted);
-      }
-      .col-4 {
-        grid-column: span 4;
-      }
-      .col-5 {
-        grid-column: span 5;
-      }
-      .col-6 {
-        grid-column: span 6;
-      }
-      .col-7 {
-        grid-column: span 7;
-      }
-      .col-8 {
-        grid-column: span 8;
-      }
-      .col-12 {
-        grid-column: span 12;
-      }
-      .actions {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        align-items: center;
       }
       button {
-        background: var(--btn);
-        border: 1px solid var(--border);
-        color: var(--text);
-        padding: 12px 18px;
-        border-radius: 8px;
+        background-color: #007cba;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
         cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.2s;
-        white-space: nowrap;
+        margin-right: 10px;
+        margin-bottom: 10px;
       }
       button:hover {
-        background: var(--btn-hover);
-        transform: translateY(-1px);
+        background-color: #005a87;
       }
-      .btn-accent {
-        background: var(--success);
-        border-color: var(--success);
-        color: white;
-      }
-      .btn-accent:hover {
-        background: #047857;
-        border-color: #047857;
-      }
-      .btn-danger {
-        background: var(--danger);
-        border-color: var(--danger);
-        color: white;
-      }
-      .btn-danger:hover {
-        background: #d97706;
-        border-color: #d97706;
-      }
-      .status {
-        font-family:
-          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
+      .output {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 4px;
+        min-height: 100px;
         white-space: pre-wrap;
-        background: var(--code);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 16px;
-        color: #e2e8f0;
-        min-height: 140px;
-        font-size: 13px;
-        line-height: 1.5;
-        overflow-x: auto;
-      }
-      .hint {
-        color: var(--muted);
-        font-size: 13px;
-        margin-top: 8px;
-        line-height: 1.4;
-      }
-      .ok {
-        color: var(--accent);
-      }
-      .err {
-        color: var(--danger);
-      }
-      .row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-      }
-      kbd {
-        padding: 2px 6px;
-        border: 1px solid var(--border);
-        border-bottom-width: 3px;
-        border-radius: 6px;
-        font-family:
-          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
+        font-family: monospace;
         font-size: 12px;
-        background: #0c1326;
-        color: #cbd5e1;
       }
-      a {
-        color: #93c5fd;
-      }
-      .small {
-        font-size: 13px;
-        color: var(--muted);
-        line-height: 1.5;
-      }
-      .mono {
-        font-family:
-          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-      }
-      h3 {
-        margin: 0 0 16px 0;
-        font-size: 18px;
-        font-weight: 600;
-        color: var(--text);
-      }
-      .card h3:first-child {
-        margin-top: 0;
+      .buttons {
+        margin-top: 15px;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>PostCrossing Mock</h1>
-      <div class="subtitle">
-        Minimal UI for requesting addresses and registering received postcards.
+
+      <div class="section">
+        <h2>Settings</h2>
+        <label>Server URL:</label>
+        <input
+          type="text"
+          id="serverUrl"
+          value="http://localhost:4000"
+          placeholder="http://localhost:4000"
+        />
+
+        <label>User ID:</label>
+        <input
+          type="text"
+          id="userId"
+          placeholder="Enter user ID from seed output"
+        />
+
+        <button onclick="testConnection()">Test Connection</button>
       </div>
 
-      <div class="card">
-        <div class="grid">
-          <div class="col-7">
-            <label for="apiBase">API base URL</label>
-            <input
-              id="apiBase"
-              type="url"
-              placeholder="http://localhost:4000"
-            />
-            <div class="hint">
-              Default server from this project listens on
-              <span class="mono">http://localhost:4000</span>.
-            </div>
-          </div>
-          <div class="col-5">
-            <label for="userId">User ID (x-user-id)</label>
-            <input
-              id="userId"
-              type="text"
-              placeholder="Paste a user _id from seed output"
-            />
-            <div class="hint">
-              Use one of the seeded IDs (e.g., alice, bruno, cami, dave).
-            </div>
-          </div>
-          <div class="col-12 actions">
-            <button id="saveCfg" class="btn-accent">Save Settings</button>
-            <button id="ping">Health Check</button>
-          </div>
+      <div class="section">
+        <h2>Actions</h2>
+        <div class="buttons">
+          <button onclick="requestAddress()">Request Address</button>
+          <button onclick="listTraveling()">List My Traveling</button>
+          <button onclick="getStats()">Get My Stats</button>
         </div>
-        <div class="hint" style="margin-top: 16px">
-          💡 <strong>Tip:</strong> If you open this file directly from your file
-          system, your browser may block requests due to CORS. Serve it via a
-          local static server or host it under the same origin as the API to
-          avoid CORS errors.
-        </div>
+
+        <label>Register Received Postcard:</label>
+        <input
+          type="text"
+          id="postcardCode"
+          placeholder="Enter postcard code (e.g., US-1)"
+        />
+        <button onclick="registerReceived()">Register Received</button>
       </div>
 
-      <div class="card">
-        <h3>📮 Send Flow</h3>
-        <div class="actions" style="margin-bottom: 16px">
-          <button id="requestAddr" class="btn-accent">
-            Request Address (POST /api/postcards/request)
-          </button>
-          <button id="listTraveling">
-            List Traveling (GET /api/postcards/traveling)
-          </button>
-          <button id="getStats">Get My Stats (GET /api/postcards/stats)</button>
+      <div class="section">
+        <h2>Output</h2>
+        <div id="output" class="output">
+          Ready. Enter your user ID and click "Test Connection" to start.
         </div>
-        <div class="small">
-          ℹ️ After "Request Address", you'll get a postcard code like
-          <span class="mono">US-1</span> and a recipient snapshot. Use that code
-          in the "Register Received" section below to simulate reciprocity.
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>📬 Register Received</h3>
-        <div class="grid" style="margin-bottom: 16px">
-          <div class="col-8">
-            <label for="recvCode">Postcard Code</label>
-            <input id="recvCode" type="text" placeholder="e.g., US-1" />
-          </div>
-          <div class="col-4 actions">
-            <button id="registerReceived" class="btn-danger">
-              Register Received (POST /api/postcards/register-received)
-            </button>
-          </div>
-        </div>
-        <div class="small">
-          ℹ️ When a postcard is registered as received, the sender gains 1
-          receive credit. The next "Request Address" will draw from the pool
-          FIFO.
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="row" style="justify-content: space-between">
-          <div><strong>📄 Output</strong></div>
-          <div class="row small">
-            <span>Copy last code:</span>
-            <button id="copyCode" title="Copy last generated code">
-              <kbd>Copy</kbd>
-            </button>
-            <span id="lastCode" class="mono" style="margin-left: 6px"></span>
-          </div>
-        </div>
-        <pre id="status" class="status" aria-live="polite">Ready.</pre>
-      </div>
-
-      <div class="small">
-        <strong>🔗 Backend endpoints used:</strong>
-        <ul style="margin: 8px 0; padding-left: 20px">
-          <li style="margin: 4px 0">
-            POST <span class="mono">/api/postcards/request</span>
-          </li>
-          <li style="margin: 4px 0">
-            GET <span class="mono">/api/postcards/traveling</span>
-          </li>
-          <li style="margin: 4px 0">
-            GET <span class="mono">/api/postcards/stats</span>
-          </li>
-          <li style="margin: 4px 0">
-            POST <span class="mono">/api/postcards/register-received</span>
-          </li>
-          <li style="margin: 4px 0">
-            GET <span class="mono">/api/meta/health</span>
-          </li>
-        </ul>
       </div>
     </div>
 
     <script>
-      // Persistent settings
-      const apiBaseEl = document.getElementById("apiBase");
-      const userIdEl = document.getElementById("userId");
-      const statusEl = document.getElementById("status");
-      const lastCodeEl = document.getElementById("lastCode");
-      const recvCodeEl = document.getElementById("recvCode");
-
-      const LS_KEY = "pcmock_settings_v1";
-
-      function loadSettings() {
-        try {
-          const s = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
-          if (s.apiBase) apiBaseEl.value = s.apiBase;
-          if (s.userId) userIdEl.value = s.userId;
-        } catch {}
-        if (!apiBaseEl.value) apiBaseEl.value = "http://localhost:4000";
+      function log(message) {
+        const output = document.getElementById("output");
+        const timestamp = new Date().toLocaleTimeString();
+        if (typeof message === "object") {
+          message = JSON.stringify(message, null, 2);
+        }
+        output.textContent = `[${timestamp}] ${message}`;
       }
-      function saveSettings() {
-        const s = {
-          apiBase: apiBaseEl.value.trim(),
-          userId: userIdEl.value.trim(),
+
+      function getHeaders() {
+        const userId = document.getElementById("userId").value.trim();
+        const headers = {
+          "Content-Type": "application/json",
         };
-        localStorage.setItem(LS_KEY, JSON.stringify(s));
-        toast("Settings saved.");
-        return s;
-      }
-
-      function toast(msg, type = "ok") {
-        const prefix = type === "err" ? "⛔ " : "✅ ";
-        log(prefix + msg);
-      }
-
-      function log(obj) {
-        const text =
-          typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
-        statusEl.textContent = text;
-      }
-
-      function pretty(obj) {
-        return JSON.stringify(obj, null, 2);
-      }
-
-      function getCfg() {
-        const apiBase = apiBaseEl.value.trim().replace(/\/+$/, "");
-        const userId = userIdEl.value.trim();
-        return { apiBase, userId };
-      }
-
-      async function apiFetch(
-        path,
-        { method = "GET", body, headers = {} } = {},
-      ) {
-        const { apiBase, userId } = getCfg();
-        if (!apiBase) throw new Error("API base URL is empty");
-        const url = apiBase + path;
-
-        const finalHeaders = { ...headers };
-        if (userId) finalHeaders["x-user-id"] = userId;
-        if (body && !finalHeaders["Content-Type"])
-          finalHeaders["Content-Type"] = "application/json";
-
-        const res = await fetch(url, {
-          method,
-          headers: finalHeaders,
-          body: body ? JSON.stringify(body) : undefined,
-        });
-
-        let data = null;
-        const text = await res.text();
-        try {
-          data = text ? JSON.parse(text) : null;
-        } catch {
-          data = text;
+        if (userId) {
+          headers["x-user-id"] = userId;
         }
-
-        if (!res.ok) {
-          const message =
-            (data && (data.error || data.message)) ||
-            res.statusText ||
-            "Request failed";
-          const err = new Error(message);
-          err.response = res;
-          err.data = data;
-          throw err;
-        }
-        return data;
+        return headers;
       }
 
-      // Actions
-      async function health() {
+      function getServerUrl() {
+        return document
+          .getElementById("serverUrl")
+          .value.trim()
+          .replace(/\/$/, "");
+      }
+
+      async function makeRequest(endpoint, method = "GET", body = null) {
         try {
-          const data = await apiFetch("/api/meta/health");
-          toast("Health OK");
-          log(data);
-        } catch (e) {
-          toast(e.message || "Health check failed", "err");
-          log(e.data || e.message || e);
+          const url = getServerUrl() + endpoint;
+          const options = {
+            method: method,
+            headers: getHeaders(),
+          };
+
+          if (body) {
+            options.body = JSON.stringify(body);
+          }
+
+          const response = await fetch(url, options);
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || `HTTP ${response.status}`);
+          }
+
+          return data;
+        } catch (error) {
+          throw new Error(`Request failed: ${error.message}`);
+        }
+      }
+
+      async function testConnection() {
+        try {
+          log("Testing connection...");
+          const result = await makeRequest("/api/meta/health");
+          log(`✅ Connection successful!\n${JSON.stringify(result, null, 2)}`);
+        } catch (error) {
+          log(`❌ Connection failed: ${error.message}`);
         }
       }
 
       async function requestAddress() {
         try {
-          const data = await apiFetch("/api/postcards/request", {
-            method: "POST",
-          });
-          if (data?.ok && data.postcard?.code) {
-            lastCodeEl.textContent = data.postcard.code;
-            recvCodeEl.value = data.postcard.code;
-            toast("Address assigned. Postcard created.");
+          const userId = document.getElementById("userId").value.trim();
+          if (!userId) {
+            log("❌ Please enter a User ID first");
+            return;
           }
-          log(data);
-        } catch (e) {
-          toast(e.message || "Request failed", "err");
-          log(e.data || e.message || e);
+
+          log("Requesting address...");
+          const result = await makeRequest("/api/postcards/request", "POST");
+
+          if (result.ok && result.postcard) {
+            // Auto-fill the postcard code for easy registration
+            document.getElementById("postcardCode").value =
+              result.postcard.code;
+            log(
+              `✅ Address requested successfully!\nPostcard code: ${result.postcard.code}\n\n${JSON.stringify(result, null, 2)}`,
+            );
+          } else {
+            log(`⚠️ Unexpected response:\n${JSON.stringify(result, null, 2)}`);
+          }
+        } catch (error) {
+          log(`❌ Failed to request address: ${error.message}`);
         }
       }
 
       async function listTraveling() {
         try {
-          const data = await apiFetch("/api/postcards/traveling");
-          toast("Fetched traveling postcards.");
-          log(data);
-        } catch (e) {
-          toast(e.message || "List traveling failed", "err");
-          log(e.data || e.message || e);
+          const userId = document.getElementById("userId").value.trim();
+          if (!userId) {
+            log("❌ Please enter a User ID first");
+            return;
+          }
+
+          log("Loading traveling postcards...");
+          const result = await makeRequest("/api/postcards/traveling");
+          log(
+            `✅ Traveling postcards loaded:\n${JSON.stringify(result, null, 2)}`,
+          );
+        } catch (error) {
+          log(`❌ Failed to load traveling postcards: ${error.message}`);
         }
       }
 
       async function getStats() {
         try {
-          const data = await apiFetch("/api/postcards/stats");
-          toast("Fetched stats.");
-          log(data);
-        } catch (e) {
-          toast(e.message || "Stats failed", "err");
-          log(e.data || e.message || e);
+          const userId = document.getElementById("userId").value.trim();
+          if (!userId) {
+            log("❌ Please enter a User ID first");
+            return;
+          }
+
+          log("Loading stats...");
+          const result = await makeRequest("/api/postcards/stats");
+          log(`✅ Stats loaded:\n${JSON.stringify(result, null, 2)}`);
+        } catch (error) {
+          log(`❌ Failed to load stats: ${error.message}`);
         }
       }
 
       async function registerReceived() {
         try {
-          const code = recvCodeEl.value.trim();
+          const code = document.getElementById("postcardCode").value.trim();
           if (!code) {
-            toast("Enter a postcard code first.", "err");
+            log("❌ Please enter a postcard code");
             return;
           }
-          const data = await apiFetch("/api/postcards/register-received", {
-            method: "POST",
-            body: { code },
-          });
-          toast("Registered as received. Credit granted to sender.");
-          log(data);
-        } catch (e) {
-          toast(e.message || "Register failed", "err");
-          log(e.data || e.message || e);
-        }
-      }
 
-      async function copyLastCode() {
-        const code = lastCodeEl.textContent.trim();
-        if (!code) {
-          toast("No code available to copy.", "err");
-          return;
-        }
-        try {
-          await navigator.clipboard.writeText(code);
-          toast("Copied code: " + code);
-        } catch {
-          toast(
-            "Clipboard unavailable. Select and copy manually: " + code,
-            "err",
+          log(`Registering postcard ${code} as received...`);
+          const result = await makeRequest(
+            "/api/postcards/register-received",
+            "POST",
+            { code },
           );
+          log(
+            `✅ Postcard registered successfully!\n${JSON.stringify(result, null, 2)}`,
+          );
+
+          // Clear the code field after successful registration
+          document.getElementById("postcardCode").value = "";
+        } catch (error) {
+          log(`❌ Failed to register postcard: ${error.message}`);
         }
       }
-
-      // Wire up events
-      document
-        .getElementById("saveCfg")
-        .addEventListener("click", saveSettings);
-      document.getElementById("ping").addEventListener("click", health);
-      document
-        .getElementById("requestAddr")
-        .addEventListener("click", requestAddress);
-      document
-        .getElementById("listTraveling")
-        .addEventListener("click", listTraveling);
-      document.getElementById("getStats").addEventListener("click", getStats);
-      document
-        .getElementById("registerReceived")
-        .addEventListener("click", registerReceived);
-      document
-        .getElementById("copyCode")
-        .addEventListener("click", copyLastCode);
-
-      // Initialize
-      loadSettings();
     </script>
   </body>
 </html>

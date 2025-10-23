@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostCrossing Extension Test Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: #f8f9fa;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .test-section {
+            background: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .test-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .test-link {
+            display: block;
+            padding: 12px 15px;
+            background: #f1f3f4;
+            text-decoration: none;
+            color: #333;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            transition: background-color 0.2s;
+        }
+
+        .test-link:hover {
+            background: #e8eaed;
+        }
+
+        .postcard-code {
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .country {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .instructions {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+
+        .non-postcrossing {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+
+        code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>PostCrossing Extension Test Page</h1>
+        <p>Use this page to test the PostCrossing Tab Sorter extension</p>
+    </div>
+
+    <div class="instructions">
+        <h3>How to test:</h3>
+        <ol>
+            <li>Right-click on the links below and select "Open link in new tab" for multiple tabs</li>
+            <li>Open the links in random order to shuffle the tabs</li>
+            <li>Click the PostCrossing Tab Sorter extension button in your toolbar</li>
+            <li>Or use the keyboard shortcut: <code>Alt + Shift + S</code></li>
+            <li>Watch the tabs get sorted by their postcard numbers!</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>PostCrossing Postcard Links</h2>
+        <p>These links simulate PostCrossing postcard pages with codes in their titles:</p>
+
+        <div class="test-links">
+            <a href="#CL-34269" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">CL-34269</span><br>
+                <span class="country">Postcard from Chile</span>
+            </a>
+
+            <a href="#CN-4087990" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">CN-4087990</span><br>
+                <span class="country">Postcard from China</span>
+            </a>
+
+            <a href="#US-11797804" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">US-11797804</span><br>
+                <span class="country">Postcard from U.S.A.</span>
+            </a>
+
+            <a href="#DE-123456" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">DE-123456</span><br>
+                <span class="country">Postcard from Germany</span>
+            </a>
+
+            <a href="#FR-987654" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">FR-987654</span><br>
+                <span class="country">Postcard from France</span>
+            </a>
+
+            <a href="#BR-555777" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">BR-555777</span><br>
+                <span class="country">Postcard from Brazil</span>
+            </a>
+
+            <a href="#JP-999111" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">JP-999111</span><br>
+                <span class="country">Postcard from Japan</span>
+            </a>
+
+            <a href="#RU-246810" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">RU-246810</span><br>
+                <span class="country">Postcard from Russia</span>
+            </a>
+
+            <a href="#AU-135792" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">AU-135792</span><br>
+                <span class="country">Postcard from Australia</span>
+            </a>
+
+            <a href="#IN-864209" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">IN-864209</span><br>
+                <span class="country">Postcard from India</span>
+            </a>
+
+            <a href="#NL-112233" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">NL-112233</span><br>
+                <span class="country">Postcard from Netherlands</span>
+            </a>
+
+            <a href="#FI-445566" class="test-link" onclick="setTitle(this)">
+                <span class="postcard-code">FI-445566</span><br>
+                <span class="country">Postcard from Finland</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="test-section non-postcrossing">
+        <h2>Non-PostCrossing Links</h2>
+        <p>These links should remain at the end after sorting:</p>
+
+        <div class="test-links">
+            <a href="#regular1" class="test-link" onclick="setTitle(this)">
+                Regular Tab 1<br>
+                <span class="country">No postcard code</span>
+            </a>
+
+            <a href="#regular2" class="test-link" onclick="setTitle(this)">
+                Regular Tab 2<br>
+                <span class="country">No postcard code</span>
+            </a>
+
+            <a href="#google" class="test-link" onclick="setTitle(this)">
+                Search Results<br>
+                <span class="country">No postcard code</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Expected Sorting Order</h2>
+        <p>After sorting, PostCrossing tabs should appear in this order (by numeric part):</p>
+        <ol>
+            <li>DE-123456 (Germany)</li>
+            <li>NL-112233 (Netherlands)</li>
+            <li>AU-135792 (Australia)</li>
+            <li>RU-246810 (Russia)</li>
+            <li>FI-445566 (Finland)</li>
+            <li>BR-555777 (Brazil)</li>
+            <li>IN-864209 (India)</li>
+            <li>FR-987654 (France)</li>
+            <li>JP-999111 (Japan)</li>
+            <li>CN-4087990 (China)</li>
+            <li>US-11797804 (U.S.A.)</li>
+        </ol>
+        <p><em>Non-PostCrossing tabs remain at the end in their original order.</em></p>
+    </div>
+
+    <script>
+        function setTitle(link) {
+            // Set the page title to match the postcard code when clicked
+            const codeElement = link.querySelector('.postcard-code');
+            const countryElement = link.querySelector('.country');
+
+            if (codeElement && countryElement) {
+                const code = codeElement.textContent;
+                const country = countryElement.textContent;
+                document.title = `postcrossing Postcrossing postcard ${code} from ${country.replace('Postcard from ', '')}`;
+            } else {
+                const text = link.textContent.trim().split('\n')[0];
+                document.title = text;
+            }
+        }
+
+        // Set initial title
+        document.addEventListener('DOMContentLoaded', () => {
+            document.title = 'PostCrossing Extension Test Page - Click links to test sorting';
+        });
+    </script>
+</body>
+</html>

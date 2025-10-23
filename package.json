@@ -12,6 +12,7 @@
     "dev": "npm run -w server dev",
     "seed": "npm run -w server seed",
     "lint": "npm run -w server lint",
+    "demo": "npm run seed && echo '\n🚀 Starting PostCrossing Mock...\n📱 Web Interface: http://localhost:4000\n🔍 API Health: http://localhost:4000/api/meta/health\n\n👥 Test Users: alice, bruno, cami, dave\n\nPress Ctrl+C to stop\n' && npm run dev",
     "start:legacy": "npm --prefix server start",
     "dev:legacy": "npm --prefix server run dev",
     "seed:legacy": "npm --prefix server run seed",

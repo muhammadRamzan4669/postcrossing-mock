@@ -30,28 +30,41 @@ async function nextPostcardCode(countryCode, session) {
 async function pickRecipientFor(sender, session) {
   const avoidSameCountry = !sender?.preferences?.allowSameCountry;
 
-  // 1) Prefer someone from the receive pool (reciprocity)
-  const credit = await ReceivePool.takeOldestEligible(
-    sender._id,
-    sender.countryCode,
-    avoidSameCountry,
-    session
-  );
+  // Use a weighted approach: 30% chance to use receive pool, 70% random selection
+  // This ensures more variety while still honoring reciprocity
+  const useReceivePool = Math.random() < 0.3;
 
-  if (credit) {
-    const recipient = await User.findById(credit.userId).session(session);
-    if (recipient) return recipient;
-    // If the credited user no longer exists, continue to fallback.
+  if (useReceivePool) {
+    // 1) Try receive pool (reciprocity) - but limited usage
+    const credit = await ReceivePool.takeOldestEligible(
+      sender._id,
+      sender.countryCode,
+      avoidSameCountry,
+      session
+    );
+
+    if (credit) {
+      const recipient = await User.findById(credit.userId).session(session);
+      if (recipient) return recipient;
+      // If the credited user no longer exists, continue to random selection.
+    }
   }
 
-  // 2) Fallback: random eligible user
+  // 2) Primary approach: truly random selection from all eligible users
   const pipeline = [
     { $match: { _id: { $ne: sender._id } } },
     ...(avoidSameCountry ? [{ $match: { countryCode: { $ne: sender.countryCode } } }] : []),
-    { $sample: { size: 8 } } // sample a few to increase chance of having a primary address
+    { $sample: { size: 20 } } // Get more candidates for better randomness
   ];
 
   const candidates = await User.aggregate(pipeline).session(session);
+
+  // Shuffle the candidates array for extra randomness
+  for (let i = candidates.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+  }
+
   for (const c of candidates) {
     // Ensure candidate has a primary address
     const addr = await Address.findOne({ userId: c._id, isPrimary: true }).session(session);
@@ -76,7 +89,10 @@ export async function requestAddressToSend(senderId) {
   const session = await mongoose.startSession();
   try {
     const result = await session.withTransaction(async () => {
-      const sender = await User.findById(senderId).session(session);
+      // Look up sender by username or ObjectId
+      const sender = mongoose.Types.ObjectId.isValid(senderId)
+        ? await User.findById(senderId).session(session)
+        : await User.findOne({ username: senderId }).session(session);
       if (!sender) return { ok: false, error: 'Sender not found' };
 
       // Verify sender has a primary address (not strictly necessary to send, but good sanity check)
@@ -184,7 +200,13 @@ export async function registerReceived(postcardCode, _actingUserId = null) {
  * List postcards currently traveling for a given user (as sender).
  */
 export async function listTraveling(userId) {
-  const items = await Postcard.find({ senderId: userId, status: 'traveling' })
+  // Look up user by username or ObjectId
+  const user = mongoose.Types.ObjectId.isValid(userId)
+    ? await User.findById(userId)
+    : await User.findOne({ username: userId });
+  if (!user) throw new Error('User not found');
+
+  const items = await Postcard.find({ senderId: user._id, status: 'traveling' })
     .sort({ requestedAt: -1 })
     .lean();
   return items;
@@ -194,7 +216,10 @@ export async function listTraveling(userId) {
  * Get summarized stats for a user, including computed max slots.
  */
 export async function getStats(userId) {
-  const user = await User.findById(userId).lean();
+  // Look up user by username or ObjectId
+  const user = mongoose.Types.ObjectId.isValid(userId)
+    ? await User.findById(userId).lean()
+    : await User.findOne({ username: userId }).lean();
   if (!user) throw new Error('User not found');
 
   const sent = user?.stats?.sent || 0;
